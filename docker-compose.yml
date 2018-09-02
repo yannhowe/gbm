@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  noticeboard_db:
+    image: postgres
+ 
+  noticeboard_db_migration:
+    restart: on-failure
+    build: ./gbm-noticeboard
+    command: python3 manage.py migrate
+    volumes:
+      - /usr/src/app
+    depends_on:
+      - noticeboard_db
+
+  collectstatic:
+    restart: on-failure
+    build: ./gbm-noticeboard
+    command: python3 manage.py collectstatic --no-input
+    volumes:
+      - /usr/src/app
+      - /usr/src/app/gbm/static
+    
+  noticeboard_app:
+    build: ./gbm-noticeboard
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - /usr/src/app
+      - /usr/src/app/gbm/static
+    ports:
+      - "8000:8000"
+    depends_on:
+      - noticeboard_db
+
+  nginx:
+    restart: always
+    build: ./gbm-nginx
+    depends_on:
+      - noticeboard_app
+      - noticeboard_db
+    volumes:
+      - ./gbm-nginx/etc/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
