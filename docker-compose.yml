@@ -3,14 +3,31 @@ version: '3'
 services:
 
   noticeboard_db:
+    restart: always
     image: postgres
- 
+    volumes:
+      - noticeboard_db_volume:/var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_PASSWORD: example
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  noticeboard_db_make_migrations:
+    restart: on-failure
+    build: ./gbm-noticeboard
+    command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py makemigrations --no-input
+    volumes:
+      - ./gbm-noticeboard:/usr/src/app
+      - ./gbm-noticeboard/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
+    depends_on:
+      - noticeboard_db
+
   noticeboard_db_migration:
     restart: on-failure
     build: ./gbm-noticeboard
-    command: python3 manage.py migrate
+    command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py migrate --no-input
     volumes:
-      - /usr/src/app
+      - ./gbm-noticeboard:/usr/src/app
+      - ./gbm-noticeboard/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
     depends_on:
       - noticeboard_db
 
@@ -19,15 +36,14 @@ services:
     build: ./gbm-noticeboard
     command: python3 manage.py collectstatic --no-input
     volumes:
-      - /usr/src/app
-      - /usr/src/app/gbm/static
-    
+      - ./gbm-noticeboard:/usr/src/app
+
+
   noticeboard_app:
     build: ./gbm-noticeboard
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py runserver 0.0.0.0:8000
     volumes:
-      - /usr/src/app
-      - /usr/src/app/gbm/static
+      - ./gbm-noticeboard:/usr/src/app
     ports:
       - "8000:8000"
     depends_on:
@@ -38,8 +54,12 @@ services:
     build: ./gbm-nginx
     depends_on:
       - noticeboard_app
-      - noticeboard_db
     volumes:
       - ./gbm-nginx/etc/nginx/conf.d:/etc/nginx/conf.d
+      - ./gbm-noticeboard/project/static:/usr/src/app/static
+      - ./gbm-noticeboard/project/media:/usr/src/app/media
     ports:
       - "80:80"
+
+volumes:
+    noticeboard_db_volume:

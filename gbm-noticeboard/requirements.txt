@@ -1,3 +1,13 @@
 Django==2.0.2
 django-environ==0.4.*
-djangorestframework==3.8.*
+psycopg2
+Pillow
+# django crud adminlte2
+django-crispy-forms
+easy-thumbnails
+django-image-cropping
+djangoajax
+django-Select2
+django-cruds-adminlte
+# django-import-export
+django-import-export

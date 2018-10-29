@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+
+  noticeboard_db:
+    restart: always
+    image: postgres
+    volumes:
+      - noticeboard_db_volume:/var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_PASSWORD: example
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+  noticeboard_db_make_migrations:
+    restart: on-failure
+    build: ./gbm-noticeboard
+    command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py makemigrations --no-input
+    volumes:
+      - noticeboard_db_volume:/var/lib/postgresql/data/pgdata
+      - noticeboard_volume:/usr/src/app
+      - noticeboard_volume/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
+    depends_on:
+      - noticeboard_db
+
+  noticeboard_db_migration:
+    restart: on-failure
+    build: ./gbm-noticeboard
+    command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py migrate --no-input
+    volumes:
+      - noticeboard_db_volume:/var/lib/postgresql/data/pgdata
+      - noticeboard_volume:/usr/src/app
+      - noticeboard_volume/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
+    depends_on:
+      - noticeboard_db
+
+  collectstatic:
+    restart: on-failure
+    build: ./gbm-noticeboard
+    command: python3 manage.py collectstatic --no-input
+    volumes:
+      - noticeboard_volume:/usr/src/app
+
+
+  noticeboard_app:
+    build: ./gbm-noticeboard
+    command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - noticeboard_volume:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - noticeboard_db
+
+  nginx:
+    restart: always
+    build: ./gbm-nginx
+    depends_on:
+      - noticeboard_app
+    volumes:
+      - /etc/nginx/conf.d
+      - noticeboard_volume:/usr/src/app/
+    ports:
+      - "80:80"
+
+volumes:
+    noticeboard_db_volume:
+    noticeboard_volume:
+    nginx_volume:

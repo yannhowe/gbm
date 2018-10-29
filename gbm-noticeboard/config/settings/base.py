@@ -14,7 +14,7 @@ import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 ROOT_DIR = environ.Path(__file__) - 3
-APPS_DIR = ROOT_DIR.path('gbm')
+APPS_DIR = ROOT_DIR.path('project')
 
 env = environ.Env()
 # This section added from an update to standards in CookieCutter Django to ensure no errors are encountered at runserver/migrations
@@ -42,11 +42,19 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'rest_framework',
+    #django-crud-adminlte
+    'crispy_forms',
+    'django_select2',
+    'easy_thumbnails',
+    'image_cropping',
+    'django_ajax',
+    'cruds_adminlte',
+    #django-import-export
+    'import_export',
 )
 
 LOCAL_APPS = (
-    'project.api',
+    'project.noticeboard',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -68,7 +76,9 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            str(APPS_DIR.path('templates')),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,8 +99,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(ROOT_DIR.path('db.sqlite3')),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'example',
+        'HOST': 'noticeboard_db',
+        'PORT': '',
     }
 }
 
@@ -131,17 +145,33 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/api/noticeboard/static/'
-STATIC_ROOT = str(ROOT_DIR('staticfiles'))
+STATIC_URL = '/static/'
+STATIC_ROOT = str(APPS_DIR.path('static'))
 STATICFILES_DIRS = (
-    str(APPS_DIR.path('static')),
+    str(APPS_DIR.path('noticeboard/static')),
 )
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 MEDIA_URL = '/media/'
-MEDIA_ROOT = str(APPS_DIR('media'))
+MEDIA_ROOT = str(APPS_DIR.path('media'))
 
 REST_FRAMEWORK = {
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+IMAGE_CROPPING_JQUERY_URL = None
+
+INTERNAL_IPS = ('127.0.0.1',)
+
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS
+
+TIME_FORMAT= 'h:i A'
+DATETIME_FORMAT='m/d/Y H:i:s'
+DATE_FORMAT="m/d/Y"
+
+TIME_INPUT_FORMATS = ['%I:%M %p']

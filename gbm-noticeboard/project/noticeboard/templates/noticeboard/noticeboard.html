@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static "noticeboard/css/main.css" %}">
+  <link rel="stylesheet" href="{% static "noticeboard/css/noticeboard.css" %}">
+  <link rel="stylesheet" href="{% static "noticeboard/css/gbm.css" %}">
+  <title>Missions Noticeboard</title>
+</head>
+
+<header id="header">
+  <h1><a href="http://localhost:1313/index.html"><img src="{% static "noticeboard/img/gbm_logo_2016.png" %}" alt="">Grace Baptist Ministries</a></h1>
+</header>
+<br /><br />
+
+<body>
+  <div class="container-fluid" id="root">
+    <div class="row">
+      <div class="col">
+        {% block update_col_1 %}
+        {% if updates_this_week.0 %}
+        <h2 class="display-1 text-center mb-2">Update</h2>
+        <div class="image fit"><img class="img-thumbnail d-block" src="{{ updates_this_week.0.missionary.profile_picture.url }}" alt="">
+          <figcaption><h4 class="text-center "><em></em></h4>
+          </figcaption>
+        </div><h2 class="text-uppercase pt-4">{{ updates_this_week.0.missionary.friendly_name }} | <em>{{ updates_this_week.0.date_of_update }}</em></h2>
+        <p>{{ updates_this_week.0.content|linebreaks }}</p>
+        {% else %}
+        {% endif %}
+        {% endblock %}
+      </div>
+
+      {% block profiles %}
+      <div class="col"><h2 class="display-1 text-center mb-2">Factsheet</h2>
+        {% if missionaries %}
+        {% for missionary in missionaries %}
+        <div class="row">
+          <div class="image fit"><img class="img-thumbnail d-block float-left mr-3" src="{% if missionary.profile_picture.url %}{{ missionary.profile_picture.url }}{% endif %}" alt="">
+            <p class=""><strong>{% if missionary.friendly_name %}{{ missionary.friendly_name }}{% endif %}</strong> {% if missionary.profile %}| {{ missionary.profile }}{% endif %} {% if missionary.upcoming %}<strong>Upcoming:</strong> {{missionary.upcoming }}{% endif %} {% if missionary.prayer %}<strong>Prayer:</strong> {{ missionary.prayer }}{% endif %}</p>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+      {% endblock %}
+
+      <div class="col">
+        {% block update_col_2 %}
+        {% if updates_this_week.1 %}
+        <h2 class="display-1 text-center mb-2">Update</h2>
+        <div class="image fit"><img class="img-thumbnail d-block" src="{{ updates_this_week.1.missionary.profile_picture.url }}" alt="">
+          <figcaption><h4 class="text-center "><em></em></h4>
+          </figcaption>
+        </div><h2 class="text-uppercase pt-4">{{ updates_this_week.1.missionary.friendly_name }} | <em>{{ updates_this_week.1.date_of_update }}</em></h2>
+        <p>{{ updates_this_week.1.content|linebreaks }}</p>
+        {% else %}
+        {% endif %}
+        {% endblock %}
+      </div>
+
+    </div>
+  </div>
+  <script src="{% static "noticeboard/js/jquery-3.3.1.slim.min.js" %}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="{% static "noticeboard/js/popper.min.js" %}" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="{% static "noticeboard/js/bootstrap.min.js" %}"></script>
+
+  <div id="feedly-mini" title="feedly Mini tookit"></div>
+</body>
+
+</html>
