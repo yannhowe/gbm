@@ -1,5 +1,7 @@
 {% extends "adminlte/base.html" %}
 
+{% load i18n %}
+
 {% block body_class %}login-page{% endblock %}
 
 {% block body %}
@@ -37,7 +39,7 @@
                             <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
                         </div>
                     </div><br />
-                    <a href="/accounts/password/reset/">Forgot Password?</a>
+                    <a href="/password/reset/">Forgot Password?</a>
                 </form>
             {% endblock login_form %}
 

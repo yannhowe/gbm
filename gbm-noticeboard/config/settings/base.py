@@ -196,4 +196,5 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-LOGIN_REDIRECT_URL="/missionary/list/"
+LOGIN_REDIRECT_URL="/cp/"
+LOGIN_URL="/login/"
