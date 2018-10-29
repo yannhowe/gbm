@@ -16,9 +16,8 @@ services:
     build: ./gbm-noticeboard
     command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py makemigrations --no-input
     volumes:
-      - noticeboard_db_volume:/var/lib/postgresql/data/pgdata
-      - noticeboard_volume:/usr/src/app
-      - noticeboard_volume/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
+      - ./gbm-noticeboard:/usr/src/app
+      - ./gbm-noticeboard/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
     depends_on:
       - noticeboard_db
 
@@ -27,9 +26,8 @@ services:
     build: ./gbm-noticeboard
     command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py migrate --no-input
     volumes:
-      - noticeboard_db_volume:/var/lib/postgresql/data/pgdata
-      - noticeboard_volume:/usr/src/app
-      - noticeboard_volume/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
+      - ./gbm-noticeboard:/usr/src/app
+      - ./gbm-noticeboard/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
     depends_on:
       - noticeboard_db
 
@@ -38,14 +36,14 @@ services:
     build: ./gbm-noticeboard
     command: python3 manage.py collectstatic --no-input
     volumes:
-      - noticeboard_volume:/usr/src/app
+      - ./gbm-noticeboard:/usr/src/app
 
 
   noticeboard_app:
     build: ./gbm-noticeboard
-    command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py runserver 0.0.0.0:8000
+    command: ./wait-for-it.sh noticeboard_db:5432 -- python3 manage.py runserver 0.0.0.0:8000 --settings=config.settings.production
     volumes:
-      - noticeboard_volume:/usr/src/app
+      - ./gbm-noticeboard:/usr/src/app
     ports:
       - "8000:8000"
     depends_on:
@@ -57,12 +55,11 @@ services:
     depends_on:
       - noticeboard_app
     volumes:
-      - /etc/nginx/conf.d
-      - noticeboard_volume:/usr/src/app/
+      - ./gbm-nginx/etc/nginx/conf.d:/etc/nginx/conf.d
+      - ./gbm-noticeboard/project/static:/usr/src/app/static
+      - ./gbm-noticeboard/project/media:/usr/src/app/media
     ports:
       - "80:80"
 
 volumes:
     noticeboard_db_volume:
-    noticeboard_volume:
-    nginx_volume:
