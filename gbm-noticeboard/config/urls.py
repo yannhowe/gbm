@@ -9,6 +9,7 @@ from cruds_adminlte.urls import crud_for_model
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('noticeboard/', include('project.noticeboard.urls')),
+    url(r'^accounts/', include('allauth.urls')),
 ]
 
 # django-cruds-adminlte

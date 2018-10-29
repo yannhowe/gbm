@@ -51,7 +51,16 @@ THIRD_PARTY_APPS = (
     'cruds_adminlte',
     #django-import-export
     'import_export',
+    #django-allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+#    'allauth.socialaccount.providers.facebook',
+#    'allauth.socialaccount.providers.google',
 )
+
+SITE_ID = 1
 
 LOCAL_APPS = (
     'project.noticeboard',
@@ -78,6 +87,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             str(APPS_DIR.path('templates')),
+            str(APPS_DIR.path('templates/allauth')),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -86,6 +96,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # `allauth` needs this from django
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -175,3 +187,13 @@ DATETIME_FORMAT='m/d/Y H:i:s'
 DATE_FORMAT="m/d/Y"
 
 TIME_INPUT_FORMATS = ['%I:%M %p']
+
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+LOGIN_REDIRECT_URL="/missionary/list/"
