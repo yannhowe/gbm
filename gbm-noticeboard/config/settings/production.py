@@ -1,3 +1,5 @@
 from .base import *
 
-ALLOWED_HOSTS = [app.gbm.sg, gbm.sg]
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='')
+DEBUG = env.bool('DJANGO_DEBUG', default=False)
+ALLOWED_HOSTS = ["noticeboard.gbm.sg"]
