@@ -30,6 +30,10 @@ case "$1" in
             docker-compose up
             docker-compose ps
             ;;
+        prod)
+            docker-compose down && docker-compose build && docker-compose -f docker-compose.production.yml up -d
+            docker-compose ps
+            ;;
         status)
             docker-compose ps
             ;;
