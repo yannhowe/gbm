@@ -4,6 +4,8 @@ from django.conf.urls import include, url
 
 from django.views.generic.base import TemplateView
 
+from django.contrib.auth.decorators import login_required
+
 # django-cruds-adminlte
 from django.apps import apps
 from cruds_adminlte.urls import crud_for_app
@@ -11,7 +13,7 @@ from cruds_adminlte.urls import crud_for_app
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('cp/', TemplateView.as_view(template_name='adminlte/home.html')),
+    path('cp/', login_required(TemplateView.as_view(template_name='adminlte/home.html'))),
     url('', include('project.noticeboard.urls')),
     url('', include('allauth.urls')),
 ]
