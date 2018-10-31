@@ -1,5 +1,7 @@
 {% extends "adminlte/base.html" %}
 
+{% load i18n %}
+
 {% block body_class %}login-page{% endblock %}
 
 {% block body %}
@@ -7,7 +9,7 @@
         {% block logo %}
         <div class="login-logo">
             {# Mirrors block names used in _main_header.html #}
-            <a href="{% block logo_href %}/{% endblock %}">{% block logo_text %}<b>Admin</b>LTE{% endblock %}</a>
+            <a href="{% block logo_href %}/{% endblock %}">{% block logo_text %}<b>G</b>race <b>B</b>aptist <b>M</b>inistries {% endblock %}</a>
         </div>
         {% endblock %}
         <!-- /.login-logo -->
@@ -18,20 +20,26 @@
                         <p class="login-box-msg" style="color: red;">{{ message }}</p>
                     {% endif %}
                     <div class="form-group has-feedback">
-                        <input name="username" class="form-control" placeholder="Email">
+                        <input class="form-control" type="text" name="login" placeholder="Username"  required id="id_login" />
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" name="password" class="form-control" placeholder="Password">
+                        <input class="form-control" type="password" name="password" placeholder="Password" required id="id_password" />
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="row">
                         <div class="col-xs-8">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="remember" id="id_remember"> <strong>Remember me</strong>
+                                </label>
+                            </div>
                         </div>
                         <div class="col-xs-4">
                             <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
                         </div>
-                    </div>
+                    </div><br />
+                    <a href="/password/reset/">Forgot Password?</a>
                 </form>
             {% endblock login_form %}
 

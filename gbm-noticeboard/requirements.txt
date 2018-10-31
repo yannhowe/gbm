@@ -11,3 +11,4 @@ django-Select2
 django-cruds-adminlte
 # django-import-export
 django-import-export
+django-allauth
