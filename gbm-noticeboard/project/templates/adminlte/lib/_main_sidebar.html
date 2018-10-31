@@ -1,0 +1,41 @@
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        {% block nav_links_ul %}
+        <ul class="sidebar-menu">
+            {% block nav_links_outer %}
+            <li class="header">{% block nav_heading %}MAIN NAVIGATION{% endblock %}</li>
+            {% block nav_links %}
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-tv"></i> <span>Noticeboard</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="{% url 'noticeboard_missionary_list' %}">
+                                <i class="fa fa-user"></i> <span>Missionaries</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'noticeboard_update_list' %}">
+                                <i class="fa fa-file-text"></i> <span>Updates</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'Noticeboard' %}">
+                                <i class="fa fa-tv"></i> <span>Noticeboard Preview</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            {% endblock nav_links %}
+            {% endblock nav_links_outer %}
+        </ul>
+        {% endblock nav_links_ul %}
+    </section>
+    <!-- /.sidebar -->
+</aside>
