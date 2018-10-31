@@ -53,7 +53,6 @@ THIRD_PARTY_APPS = (
     #django-import-export
     'import_export',
     #django-allauth
-    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
