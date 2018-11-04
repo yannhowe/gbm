@@ -5,4 +5,4 @@ SECRET_KEY = env('DJANGO_SECRET_KEY', default='(8bc!a7-c8acqgl50y48k%m5f2ye7*+nz
 
 DEBUG = env.bool('DJANGO_DEBUG', default=True)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', env('DJANGO_ALLOWED_HOSTS')]
