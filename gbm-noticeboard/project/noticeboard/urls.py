@@ -4,5 +4,5 @@ from django.urls import path
 from project.noticeboard import views
 
 urlpatterns = [
-    path('', views.NoticeboardView.as_view(), name='Noticeboard'),
+    path('noticeboard/', views.NoticeboardView.as_view(), name='Noticeboard'),
 ]

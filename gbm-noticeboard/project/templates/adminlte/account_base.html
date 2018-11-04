@@ -9,25 +9,25 @@
         {% block logo %}
         <div class="login-logo">
             {# Mirrors block names used in _main_header.html #}
-            <a href="{% block logo_href %}/{% endblock %}">{% block logo_text %}<b>G</b>race <b>B</b>aptist <b>M</b>inistries
-                {% endblock %}</a>
+            <a href="{% block logo_href %}/{% endblock %}">{% block logo_text %}<b>G</b>race <b>B</b>aptist <b>M</b>inistries {% endblock %}</a>
         </div>
         {% endblock %}
         <!-- /.login-logo -->
         <div class="login-box-body">
-            {% block login_form %}
+            {% block content %}
                 <h1>{% trans "Sign Out" %}</h1>
 
                 <p>{% trans 'Are you sure you want to sign out?' %}</p>
 
                 <form method="post" action="{% url 'account_logout' %}">
                     {% csrf_token %}
+                    {{ form.as_p }}
                     {% if redirect_field_value %}
                     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                     {% endif %}
                     <button type="submit">{% trans 'Sign Out' %}</button>
                 </form>
-            {% endblock login_form %}
+            {% endblock content %}
 
         </div>
     </div>

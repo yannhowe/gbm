@@ -15,7 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('cp/', login_required(TemplateView.as_view(template_name='adminlte/home.html'))),
     url('', include('project.noticeboard.urls')),
-    url('', include('allauth.urls')),
+    url('account/', include('allauth.urls')),
 ]
 
 # django-cruds-adminlte
