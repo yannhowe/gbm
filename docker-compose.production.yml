@@ -7,9 +7,7 @@ services:
     image: postgres
     volumes:
       - noticeboard_db_volume:/var/lib/postgresql/data/pgdata
-    environment:
-      POSTGRES_PASSWORD: example
-      PGDATA: /var/lib/postgresql/data/pgdata
+    env_file: .env
 
   noticeboard_db_make_migrations:
     restart: on-failure
@@ -20,6 +18,7 @@ services:
       - ./gbm-noticeboard/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
     depends_on:
       - noticeboard_db
+    env_file: .env
 
   noticeboard_db_migration:
     restart: on-failure
@@ -30,6 +29,7 @@ services:
       - ./gbm-noticeboard/project/noticeboard/migrations:/usr/src/app/project/noticeboard/migrations
     depends_on:
       - noticeboard_db
+    env_file: .env
 
   collectstatic:
     restart: on-failure
@@ -37,6 +37,7 @@ services:
     command: python3 manage.py collectstatic --no-input
     volumes:
       - ./gbm-noticeboard:/usr/src/app
+    env_file: .env
 
 
   noticeboard_app:
@@ -48,6 +49,7 @@ services:
       - "8000:8000"
     depends_on:
       - noticeboard_db
+    env_file: .env
 
   nginx:
     restart: always
@@ -60,6 +62,7 @@ services:
       - ./gbm-noticeboard/project/media:/usr/src/app/media
     ports:
       - "80:80"
+    env_file: .env
 
 volumes:
     noticeboard_db_volume:
