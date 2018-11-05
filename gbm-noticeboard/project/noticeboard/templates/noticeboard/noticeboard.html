@@ -36,10 +36,10 @@
       </div>
 
       {% block profiles %}
-      <div class="col"><h2 class="display-1 text-center mb-2">Factsheet</h2>
+      <div class="col"><h2 class="display-1 text-center mb-2">Our Missionaries</h2>
         {% if missionaries %}
         {% for missionary in missionaries %}
-        <div class="row">
+        <div class="row mb-3">
           <div class="image fit"><img class="img-thumbnail d-block float-left mr-3" src="{% if missionary.profile_picture.url %}{{ missionary.profile_picture.url }}{% endif %}" alt="">
             <p class=""><strong>{% if missionary.friendly_name %}{{ missionary.friendly_name }}{% endif %}</strong> {% if missionary.profile %}| {{ missionary.profile }}{% endif %} {% if missionary.upcoming %}<strong>Upcoming:</strong> {{missionary.upcoming }}{% endif %} {% if missionary.prayer %}<strong>Prayer:</strong> {{ missionary.prayer }}{% endif %}</p>
           </div>

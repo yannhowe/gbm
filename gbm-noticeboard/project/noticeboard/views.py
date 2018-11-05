@@ -20,5 +20,5 @@ class NoticeboardView(TemplateView):
          start_week = date - datetime.timedelta(date.weekday())
          end_week = start_week + datetime.timedelta(6)
          context['updates_this_week'] = Update.objects.filter(date_publish__range=[start_week, end_week]).exclude(hidden=True)
-         context['missionaries'] = Missionary.objects.all()[:4]
+         context['missionaries'] = Missionary.objects.all()[:8]
          return context
