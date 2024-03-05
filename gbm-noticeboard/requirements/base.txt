@@ -1,4 +1,4 @@
-Django==2.0.2
+Django==3.2.25
 django-environ==0.4.*
 djangorestframework==3.8.*
 psycopg2
