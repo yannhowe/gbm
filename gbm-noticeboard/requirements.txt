@@ -1,4 +1,4 @@
-Django==2.0.*
+Django==4.2.27
 django-environ==0.4.*
 psycopg2
 Pillow
@@ -12,3 +12,4 @@ django-cruds-adminlte
 # django-import-export
 django-import-export
 django-allauth
+sqlparse>=0.5.4 # not directly required, pinned by Snyk to avoid a vulnerability
